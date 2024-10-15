@@ -15,6 +15,8 @@ const setTokensCookies = (
     httpOnly: true,
     secure: true, // Set to true if using HTTPS
     sameSite: "None",
+    secure: process.env.NODE_ENV === 'production',  // Set true only in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
     maxAge: accessTokenMaxAge,
     // sameSite: 'strict', // Adjust according to your requirements
   });
@@ -24,6 +26,8 @@ const setTokensCookies = (
     httpOnly: true,
     secure: true, // Set to true if using HTTPS
     sameSite: "None",
+    secure: process.env.NODE_ENV === 'production',  // Set true only in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', 
     maxAge: refreshTokenmaxAge,
     // sameSite: 'strict', // Adjust according to your requirements
   });
@@ -32,6 +36,8 @@ const setTokensCookies = (
     httpOnly: false,
     secure: false, // Set to true if using HTTPS
     sameSite: "None",
+    secure: process.env.NODE_ENV === 'production',  // Set true only in production
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', 
     maxAge: refreshTokenmaxAge,
     // sameSite: 'strict', // Adjust according to your requirements
   });
