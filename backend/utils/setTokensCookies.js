@@ -5,40 +5,35 @@ const setTokensCookies = (
   newAccessTokenExp,
   newRefreshTokenExp
 ) => {
-  // Get the environment mode
-  const isProduction = process.env.NODE_ENV === 'production';
-
-  // Calculate the expiration time for the cookies
   const accessTokenMaxAge =
     (newAccessTokenExp - Math.floor(Date.now() / 1000)) * 1000;
-  const refreshTokenMaxAge =
+  const refreshTokenmaxAge =
     (newRefreshTokenExp - Math.floor(Date.now() / 1000)) * 1000;
 
-  // Set the cookie for Access Token
+  // Set Cookie for Access Token
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: isProduction,  // true only in production
-    sameSite: isProduction ? 'None' : 'Lax',  // Allow cross-origin in production
+    secure: true, // Set to true if using HTTPS
+    sameSite: "None",
     maxAge: accessTokenMaxAge,
-    domain: isProduction ? 'https://holidayplanning.onrender.com' : undefined,  // Optional: Set domain for production
+    // sameSite: 'strict', // Adjust according to your requirements
   });
 
-  // Set the cookie for Refresh Token
+  // Set Cookie for Refresh Token
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'None' : 'Lax',
-    maxAge: refreshTokenMaxAge,
-    domain: isProduction ? 'https://holidayplanning.onrender.com' : undefined,  // Optional
+    secure: true, // Set to true if using HTTPS
+    sameSite: "None",
+    maxAge: refreshTokenmaxAge,
+    // sameSite: 'strict', // Adjust according to your requirements
   });
-
-  // Set the cookie for is_auth
+  // Set Cookie for is_auth
   res.cookie("is_auth", true, {
     httpOnly: false,
-    secure: isProduction,
-    sameSite: isProduction ? 'None' : 'Lax',
-    maxAge: refreshTokenMaxAge,
-    domain: isProduction ? 'https://holidayplanning.onrender.com' : undefined,  // Optional
+    secure: false, // Set to true if using HTTPS
+    sameSite: "None",
+    maxAge: refreshTokenmaxAge,
+    // sameSite: 'strict', // Adjust according to your requirements
   });
 };
 
