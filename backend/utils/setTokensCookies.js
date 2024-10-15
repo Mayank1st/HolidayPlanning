@@ -5,41 +5,40 @@ const setTokensCookies = (
   newAccessTokenExp,
   newRefreshTokenExp
 ) => {
+  // Get the environment mode
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  // Calculate the expiration time for the cookies
   const accessTokenMaxAge =
     (newAccessTokenExp - Math.floor(Date.now() / 1000)) * 1000;
-  const refreshTokenmaxAge =
+  const refreshTokenMaxAge =
     (newRefreshTokenExp - Math.floor(Date.now() / 1000)) * 1000;
 
-  // Set Cookie for Access Token
+  // Set the cookie for Access Token
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: true, // Set to true if using HTTPS
-    sameSite: "None",
-    secure: process.env.NODE_ENV === 'production',  // Set true only in production
-    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+    secure: isProduction,  // true only in production
+    sameSite: isProduction ? 'None' : 'Lax',  // Allow cross-origin in production
     maxAge: accessTokenMaxAge,
-    // sameSite: 'strict', // Adjust according to your requirements
+    domain: isProduction ? 'https://holidayplanning.onrender.com' : undefined,  // Optional: Set domain for production
   });
 
-  // Set Cookie for Refresh Token
+  // Set the cookie for Refresh Token
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true, // Set to true if using HTTPS
-    sameSite: "None",
-    secure: process.env.NODE_ENV === 'production',  // Set true only in production
-    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', 
-    maxAge: refreshTokenmaxAge,
-    // sameSite: 'strict', // Adjust according to your requirements
+    secure: isProduction,
+    sameSite: isProduction ? 'None' : 'Lax',
+    maxAge: refreshTokenMaxAge,
+    domain: isProduction ? 'https://holidayplanning.onrender.com' : undefined,  // Optional
   });
-  // Set Cookie for is_auth
+
+  // Set the cookie for is_auth
   res.cookie("is_auth", true, {
     httpOnly: false,
-    secure: false, // Set to true if using HTTPS
-    sameSite: "None",
-    secure: process.env.NODE_ENV === 'production',  // Set true only in production
-    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', 
-    maxAge: refreshTokenmaxAge,
-    // sameSite: 'strict', // Adjust according to your requirements
+    secure: isProduction,
+    sameSite: isProduction ? 'None' : 'Lax',
+    maxAge: refreshTokenMaxAge,
+    domain: isProduction ? 'https://holidayplanning.onrender.com' : undefined,  // Optional
   });
 };
 
