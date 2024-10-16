@@ -12,13 +12,17 @@ const port = process.env.PORT;
 const DATABASE_URL = process.env.DATABASE_URL;
 // This will solve CORS Policy Error
 const corsOptions = {
-  // set origin to a specific origin.
-  origin: process.env.FRONTEND_HOST,
-  credentials: true,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Authorization",
-  optionsSuccessStatus: 200,
+  origin: process.env.FRONTEND_HOST, // Allow requests from the frontend
+  credentials: true, // Allow sending cookies and credentials
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS", // Include OPTIONS for preflight
+  allowedHeaders: "Content-Type,Authorization", // Headers allowed
+  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
 };
+
+// Handle OPTIONS preflight requests
+app.options('*', cors(corsOptions));
+
+// Apply CORS to all routes
 app.use(cors(corsOptions));
 
 // Database Connection
