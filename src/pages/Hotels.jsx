@@ -7,9 +7,8 @@ const Hotels = () => {
   const [hotels, setHotels] = useState([]);
   const [filteredHotels, setFilteredHotels] = useState([]);
   const [selectedDestination, setSelectedDestination] = useState("");
-  const [visibleHotels, setVisibleHotels] = useState(6); // Number of initially visible hotels
-
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const [visibleHotels, setVisibleHotels] = useState(6); 
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchHotels = async () => {

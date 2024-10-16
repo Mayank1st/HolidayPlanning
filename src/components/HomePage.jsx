@@ -139,7 +139,6 @@ export default function HomePage() {
       </div>
       {/* Travel Section */}
       <div className="container mt-3">
-        {" "}
         <PopularCity />
       </div>
 
@@ -147,16 +146,13 @@ export default function HomePage() {
         <h1 data-aos="fade-down" style={{ textAlign: "center" }}>
           States in India
         </h1>
-
         <StatsSection />
       </div>
       <div className="container mt-3">
-        {" "}
         <Testimonials />
       </div>
 
       <div className="container mt-3">
-        {" "}
         <Footer />
       </div>
     </>

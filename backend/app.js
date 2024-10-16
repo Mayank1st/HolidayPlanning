@@ -10,6 +10,7 @@ import "./config/passport-jwt-strategy.js";
 const app = express();
 const port = process.env.PORT;
 const DATABASE_URL = process.env.DATABASE_URL;
+
 // This will solve CORS Policy Error
 const corsOptions = {
   origin: process.env.FRONTEND_HOST, // Allow requests from the frontend

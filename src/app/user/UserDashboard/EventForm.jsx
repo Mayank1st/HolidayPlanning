@@ -52,7 +52,7 @@ const EventForm = ({ onClose }) => {
         }));
         localStorage.setItem(`event_${eventId}_responses`, JSON.stringify(responses));
       }
-    }, 10000); // Fetch every 1 minute
+    }, 10000); 
   
     return () => clearInterval(intervalId);
   }, []);
@@ -239,12 +239,10 @@ const EventForm = ({ onClose }) => {
         isClosable: true,
       });
     } finally {
-      // Clear the form fields
       setName("");
       setStartDate("");
       setEndDate("");
       setEmail("");
-      // Close the form
       onClose();
     }
   };

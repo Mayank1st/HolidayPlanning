@@ -1,70 +1,71 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Heading, Text, Img, SimpleGrid, Center, Button, useToast } from '@chakra-ui/react';
 import { BsArrowUpRight } from 'react-icons/bs';
-import StatesData from '../TravelSection/StatesData';
-import { useGetUserQuery } from '../../lib/services/auth';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const DistrictSection = () => {
-  const { stateName } = useParams();
+  const { stateName } = useParams(); 
+  const [stateData, setStateData] = useState(null); 
   const navigate = useNavigate();
   const toast = useToast();
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
 
-  // Check if the user is logged in
-  const { data: user, isLoading, isError } = useGetUserQuery();
+  useEffect(() => {
+    // Fetch states data
+    const fetchStateData = async () => {
+      try {
+        const response = await fetch('https://api.jsonbin.io/v3/b/670fce21e41b4d34e443d4fd');
+        const data = await response.json();
+        
+        // Find the state that matches the stateName from params
+        const selectedState = data.record.find((s) => s.name === stateName);
+        
+        if (selectedState) {
+          setStateData(selectedState); // Set the state data if found
+        } else {
+          setStateData(null); // Handle state not found case
+        }
+      } catch (error) {
+        console.error("Error fetching state data:", error);
+      }
+    };
 
-  // Find the selected state
-  const state = StatesData.find(s => s.name === stateName);
+    fetchStateData();
+  }, [stateName]);
 
-  if (!state) {
-    return <Text>State not found</Text>;
+  if (!stateData) {
+    return <Text>State not found</Text>; // Show error if the state doesn't exist
   }
 
   const handleViewMore = (district) => {
-    if (isLoading) return; // Avoid navigation if still loading
-    if (user) {
-      console.log(state.name)
-
-      navigate(`/user/profile`, {
-        state: {
-          selectedDistrict: district,
-          stateName: state.name // Pass the state name as well
-        }
-      });
-    } else {
-      toast({
-        title: "User is logged out",
-        description: "Please login first",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
+    navigate(`/user/profile`, {
+      state: {
+        selectedDistrict: district,
+        stateName: stateData.name, 
+      },
+    });
   };
-  
 
   return (
     <Center py={6} flexDirection="column" width="full">
-      <Heading mb={6}>{state.name}</Heading>
+      <Heading mb={6}>{stateData.name}</Heading>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
-        {state.districts.map((district, index) => (
+        {stateData.districts.map((district, index) => (
           <Box
             key={index}
             w="full"
             maxW="350px"
             h="max-content"
-            rounded={"sm"}
-            overflow={"hidden"}
+            rounded="sm"
+            overflow="hidden"
             bg="white"
-            border={"1px"}
+            border="1px"
             borderColor="black"
             boxShadow="6px 6px 0 black"
           >
-            <Box h={"200px"} borderBottom={"1px"} borderColor="black">
+            <Box h="200px" borderBottom="1px" borderColor="black">
               <Img
                 src={district.image_url}
-                roundedTop={"sm"}
+                roundedTop="sm"
                 objectFit="cover"
                 h="full"
                 w="full"
@@ -74,24 +75,24 @@ const DistrictSection = () => {
             <Box p={4}>
               <Box
                 bg="black"
-                display={"inline-block"}
+                display="inline-block"
                 px={2}
                 py={1}
                 color="white"
                 mb={2}
               >
-                <Text fontSize={"xs"} fontWeight="medium">
+                <Text fontSize="xs" fontWeight="medium">
                   {district.name}
                 </Text>
               </Box>
-              <Heading color={"black"} fontSize={"2xl"} noOfLines={1}>
+              <Heading color="black" fontSize="2xl" noOfLines={1}>
                 {district.name}
               </Heading>
-              <Text color={"gray.500"} noOfLines={2}>
+              <Text color="gray.500" noOfLines={2}>
                 {district.description}
               </Text>
             </Box>
-            <Box borderTop={"1px"} borderColor="black">
+            <Box borderTop="1px" borderColor="black">
               <Button
                 onClick={() => handleViewMore(district)}
                 colorScheme="teal"
@@ -99,10 +100,10 @@ const DistrictSection = () => {
                 p={4}
                 display="flex"
                 alignItems="center"
-                justifyContent={"space-between"}
-                roundedBottom={"sm"}
+                justifyContent="space-between"
+                roundedBottom="sm"
               >
-                <Text fontSize={"md"} fontWeight={"semibold"}>
+                <Text fontSize="md" fontWeight="semibold">
                   View more
                 </Text>
                 <BsArrowUpRight />

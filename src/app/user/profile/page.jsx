@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom"; // Import to access the state object
 import EventCard from "../UserDashboard/EventCard";
 import EventForm from "../UserDashboard/EventForm";
 import { useToast } from "@chakra-ui/react";
@@ -9,6 +10,9 @@ const Profile = () => {
   const [eventResponses, setEventResponses] = useState([]);
   const { data, isSuccess } = useGetUserQuery();
   const toast = useToast();
+
+  const location = useLocation();
+  const { stateName, selectedDistrict } = location.state || {}; 
 
   useEffect(() => {
     if (data && isSuccess) {
@@ -47,10 +51,10 @@ const Profile = () => {
         <EventCard />
       </div>
       <div className="user-profile-form-section">
-        <EventForm />
+        {/* Pass stateName and selectedDistrict as props to EventForm */}
+        <EventForm stateName={stateName} districtName={selectedDistrict.name} />
       </div>
       <div className="event-responses-section">
-        {/* Optionally, you can still display responses here if needed */}
         <h2 className="text-2xl font-bold mb-4">Event Responses</h2>
         {eventResponses.length > 0 ? (
           <ul>
