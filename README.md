@@ -11,6 +11,9 @@ Struggling to plan the perfect weekend getaway with friends? Weekend Planner is 
 ## Project Type
 Fullstack
 
+## JSON data set
+Check Here :[https://api.jsonbin.io/v3/b/670fce21e41b4d34e443d4fd]
+
 ## Deployed App
 Check Here: [https://holidaytales-cw.netlify.app/]
 
