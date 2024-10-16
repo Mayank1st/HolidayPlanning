@@ -14,12 +14,10 @@ import {
   HStack,
   Avatar,
   Text,
-  Box,
   IconButton,
 } from "@chakra-ui/react";
 import Register from "../app/account/register/page";
 import Login from "../app/account/login/page";
-import Cookies from "js-cookie";
 import {
   useLogoutUserMutation,
   useLoginUserMutation,
@@ -28,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { FiBell, FiChevronDown, FiMenu } from "react-icons/fi";
 
 const Navbar = () => {
-  const [isAuth, setIsAuth] = useState(Cookies.get("is_auth"));
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("is_auth"));
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = useState(null);
   const [modalContent, setModalContent] = useState(null);
@@ -41,7 +39,7 @@ const Navbar = () => {
     try {
       const response = await logoutUser();
       if (response.data && response.data.status === "success") {
-        Cookies.remove("is_auth");
+        localStorage.removeItem("is_auth");
         setIsAuth(null);
         navigate("/");
       }
@@ -51,15 +49,24 @@ const Navbar = () => {
   };
 
   const handleLoginSuccess = () => {
-    Cookies.set("is_auth", "true");
+    localStorage.setItem("is_auth", "true");
     setIsAuth(true);
     onClose();
-    navigate("/user/profile");
+
+    // Reload the page and delay navigation to ensure the page is reloaded first
+    setTimeout(() => {
+      window.location.reload();
+    }, 100); // Delay to allow reload before navigation
+
+    // Use a small timeout to navigate to the profile page after reload
+    setTimeout(() => {
+      // navigate("/user/profile");
+    }, 500); // Adjust delay based on your needs
   };
 
   useEffect(() => {
-    const authCookie = Cookies.get("is_auth");
-    setIsAuth(authCookie);
+    const authStatus = localStorage.getItem("is_auth");
+    setIsAuth(authStatus);
   }, []);
 
   const OverlayOne = () => (

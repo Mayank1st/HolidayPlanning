@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://holidayplanning.onrender.com/api/user/",
+    baseUrl: "http://holidayplanning.onrender.com/api/user/",
   }), // production URL
   endpoints: (builder) => ({
     createUser: builder.mutation({
@@ -40,14 +40,14 @@ export const authApi = createApi({
           headers: {
             "Content-type": "application/json",
           },
-          credentials: "include", // It is required to set cookie
+          credentials: "include", 
         };
       },
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           // Set isAuth to true in local storage on successful login
-          localStorage.setItem("isAuth", "true");
+          localStorage.setItem("is_auth", "true");
         } catch (error) {
           // Handle error if needed
         }
@@ -75,7 +75,7 @@ export const authApi = createApi({
         try {
           await queryFulfilled;
           // Clear isAuth from local storage on logout
-          localStorage.removeItem("isAuth");
+          localStorage.removeItem("is_auth");
         } catch (error) {
           // Handle error if needed
         }
